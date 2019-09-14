@@ -93,6 +93,7 @@ void LoadData(void* &pData){
 		while (r.good()) {
 			TStation s;
 			r >> s.id;
+			if (s.id > p->maxIdSt) p->maxIdSt = s.id;
 			getline(r, bo, ',');
 			getline(r, s.name, ',');
 			getline(r, bo, '(');
@@ -140,7 +141,7 @@ L1List<TTrack>& TDataset::getTrack(){
     return this->track;
 }
 
-int TDataset::CL(){ return this->numLine; }
+int TDataset::CL(){ return this->getLine().getSize(); }
 int TDataset::CLcity(string city){
     TCity a(city);
     int idx;

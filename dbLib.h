@@ -110,15 +110,15 @@ struct ListITofLI {
 class TDataset {
     // This class can be a container that help you manage your tables
     private:
-        int maxIdSt;
-        int numLine;
+        //int numLine;
         L1List<TCity> city;
         L1List<TLine> line;
         L1List<TStation> station;
         L1List<TTrack> track;
     public:
-        TDataset():maxIdSt(0),numLine(0),city(L1List<TCity>()),line(L1List<TLine>()),station(L1List<TStation>()),track(L1List<TTrack>()){}
+        TDataset():maxIdSt(0),city(L1List<TCity>()),line(L1List<TLine>()),station(L1List<TStation>()),track(L1List<TTrack>()){}
        // ~TDataset();
+		int maxIdSt;
         L1List<TCity>& getCity();
         L1List<TLine>& getLine();
         L1List<TStation>& getStation();
