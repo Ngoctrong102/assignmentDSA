@@ -20,6 +20,7 @@ int main() {
     int     N;
     LoadData(pData);
     assert(pData != nullptr);
+	TDataset* p = static_cast<TDataset*>(pData);
     cout << fixed << setprecision(8);
     string req;
     while (true) {

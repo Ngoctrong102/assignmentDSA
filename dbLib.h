@@ -25,14 +25,7 @@
 /* TODO: Please design your data structure carefully so that you can work with the given dataset
  *       in this assignment. The below structures are just some suggestions.
  */
-class Point{
-    private:
-        double x,y;
-    public:
-        Point():x(0),y(0){}
-        Point(double a, double b):x(a),y(b){}
-        bool operator==(Point a);
-};
+
 struct TCity {
     // The structure to store city information
     /*id: integer
@@ -80,8 +73,8 @@ struct TTrack {
 	- length: integer
 	- city_id: integer*/
     int id;
-    L1List<Point> lis;
-    TTrack():id(0),lis(L1List<Point>()){}
+    string lis;
+    TTrack():id(0),lis(""){}
     //~TTrack();
 };
 struct TStation{
@@ -96,8 +89,8 @@ struct TStation{
     int id;
     string name;
     int city_id;
-    Point pos;
-    TStation():id(0),name(""),city_id(0),pos(Point()){}
+    string pos;
+    TStation():id(0),name(""),city_id(0),pos(""){}
     //~TStation();
 };
 

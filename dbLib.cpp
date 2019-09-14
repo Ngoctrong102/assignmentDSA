@@ -80,15 +80,29 @@ void LoadData(void* &pData){
 			ListITofLI LI(l.id);
 			int index = 0;
 			L1Item<ListITofLI>* tam = station_lines->find(LI, index);
-			if (tam!=NULL) l.list_stid = tam->data.idIT;
+			if (tam != NULL) l.list_stid = tam->data.idIT;
 			tam = track_lines->find(LI, index);
-			if (tam!=NULL) l.list_trid = tam->data.idIT;
+			if (tam != NULL) l.list_trid = tam->data.idIT;
 			p->getLine().push_back(l);
 		}
-		cout << "y";
 		r.close();
 
-
+		r.open("stations.csv", ios::in);
+		if (!r.is_open()) throw DSAException(4, "Can't open file station.csv!");
+		getline(r, bo);
+		while (r.good()) {
+			TStation s;
+			r >> s.id;
+			getline(r, bo, ',');
+			getline(r, s.name, ',');
+			getline(r, bo, '(');
+			getline(r, s.pos, ')');
+			for (int k = 0; k < 4; k++) getline(r, bo, ',');
+			r >> s.city_id;
+			getline(r, bo);
+			p->getStation().push_back(s);
+		}
+		r.close();
 
 
 
@@ -99,9 +113,7 @@ void LoadData(void* &pData){
 	}
 }
 
-bool Point::operator==(Point a){
-    return this->x == a.x && this->y == a.y;
-}
+
 
 TCity::TCity(string name){
     this->id=0;
