@@ -105,7 +105,18 @@ void LoadData(void* &pData){
 		}
 		r.close();
 
-
+		r.open("tracks.csv", ios::in);
+		if (!r.is_open()) throw DSAException(4, "Can't open file tracks.csv!");
+		getline(r, bo);
+		while (r.good()) {
+			TTrack tra;
+			r >> tra.id;
+			getline(r, bo, '(');
+			getline(r, tra.lis, ')');
+			getline(r, bo);
+			p->getTrack().push_back(tra);
+		}
+		r.close();
 
 		pData = p;
 	}

@@ -85,7 +85,6 @@ struct TStation{
 	- opening: integer
 	- closure: integer
 	- city_id: integer*/
-    static int num;
     int id;
     string name;
     int city_id;
