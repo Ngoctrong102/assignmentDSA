@@ -145,7 +145,7 @@ class TDataset {
         int  RSL(int station_id, int line_id);
 };
 
-//L1List<ListITofLI>* doc_lines(string tenfile,)
+L1List<ListITofLI>* doc_lines(string tenfile);
 // Please add more or modify as needed
 
 void LoadData(void* &);

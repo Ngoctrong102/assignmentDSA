@@ -13,7 +13,34 @@
 
 /* TODO: You can implement methods, functions that support your data structures here.
  * */
-
+L1List<ListITofLI>* doc_lines(string tenfile) {
+	ifstream r(tenfile, ios::in);
+	if (!r.is_open()) throw new DSAException(3,"Can't open file!");
+	L1List<ListITofLI>* t = new L1List<ListITofLI>;
+	int tr = 0;
+	int li = 0;
+	string bo;
+	getline(r, bo);
+	while (r.good()) {
+		getline(r, bo, ',');
+		r >> tr;
+		getline(r, bo, ',');
+		r >> li;
+		getline(r, bo);
+		ListITofLI LI(li);
+		int index = 0;
+		L1Item<ListITofLI>* tam = t->find(LI, index);
+		if (tam != NULL) {
+			tam->data.idIT.push_back(tr);
+		}
+		else {
+			ListITofLI* o = new ListITofLI(li);
+			t->push_back(*o).data.idIT.push_back(tr);
+		}
+	}
+	r.close();
+	return t;
+}
 void LoadData(void* &pData){
     TDataset* p = new TDataset();
     ifstream r;
@@ -31,61 +58,14 @@ void LoadData(void* &pData){
 		p->getCity().push_back(a);
     }
     r.close();
-    cout << p->getCity().getSize();
-
-
-
-	r.open("station_lines.csv", ios::in);
-	if (!r.is_open()) throw DSAException(3, "Can't open file Station_lines.csv!");
-	L1List<ListITofLI>*	station_lines = new L1List<ListITofLI>;
-	int st = 0;
-	int li = 0;
-	getline(r, bo);
-	while (r.good()) {
-		getline(r, bo, ',');
-		r >> st;
-		getline(r, bo, ',');
-		r >> li;
-		getline(r, bo);
-		ListITofLI LI(li);
-		int index = 0;
-		L1Item<ListITofLI>* tam = station_lines->find(LI, index);
-		if (tam != NULL) {
-			tam->data.idIT.push_back(st);
-		}
-		else {
-			ListITofLI* o = new ListITofLI(li);
-			station_lines->push_back(*o).data.idIT.push_back(st);
-		}
+    //cout << p->getCity().getSize();
+	try {
+		L1List<ListITofLI>* station_lines = doc_lines("station_lines.csv");
+		L1List<ListITofLI>* track_lines = doc_lines("track_lines.csv");
 	}
-	r.close();
-
-	/*
-	r.open("station_lines.csv", ios::in);
-	if (!r.is_open()) throw DSAException(4, "Can't open file track_lines.csv!");
-	L1List<ListITofLI>* track_lines = new L1List<ListITofLI>;
-	int tr = 0;
-	int li = 0;
-	getline(r, bo);
-	while (r.good()) {
-		getline(r, bo, ',');
-		r >> tr;
-		getline(r, bo, ',');
-		r >> li;
-		getline(r, bo);
-		ListITofLI LI(li);
-		int index = 0;
-		L1Item<ListITofLI>* tam = track_lines->find(LI, index);
-		if (tam != NULL) {
-			tam->data.idIT.push_back(st);
-		}
-		else {
-			ListITofLI* o = new ListITofLI(li);
-			track_lines->push_back(*o).data.idIT.push_back(st);
-		}
+	catch (DSAException e) {
+		throw e;
 	}
-	r.close();
-	*/
 }
 
 bool Point::operator==(Point a){
