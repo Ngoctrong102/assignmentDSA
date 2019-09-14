@@ -18,13 +18,8 @@ int main() {
     void*   pData = nullptr;
     void*   pOutput = nullptr;
     int     N;
-    try{
     LoadData(pData);
-    }
-    catch(DSAException e){
-        cout << e.getErrorText();
-    }
-    //assert(pData != nullptr);
+    assert(pData != nullptr);
     cout << fixed << setprecision(8);
     string req;
     while (true) {

@@ -19,7 +19,7 @@ void LoadData(void* &pData){
     ifstream r;
     // doc file city
     r.open("cities.csv",ios::in);
-    if (!r.is_open()) throw DSAException(2,"Can't open file!");
+    if (!r.is_open()) throw DSAException(2,"Can't open file cities.csv!");
     string bo;
     getline(r,bo);
     while (r.good()){
@@ -32,6 +32,60 @@ void LoadData(void* &pData){
     }
     r.close();
     cout << p->getCity().getSize();
+
+
+
+	r.open("station_lines.csv", ios::in);
+	if (!r.is_open()) throw DSAException(3, "Can't open file Station_lines.csv!");
+	L1List<ListITofLI>*	station_lines = new L1List<ListITofLI>;
+	int st = 0;
+	int li = 0;
+	getline(r, bo);
+	while (r.good()) {
+		getline(r, bo, ',');
+		r >> st;
+		getline(r, bo, ',');
+		r >> li;
+		getline(r, bo);
+		ListITofLI LI(li);
+		int index = 0;
+		L1Item<ListITofLI>* tam = station_lines->find(LI, index);
+		if (tam != NULL) {
+			tam->data.idIT.push_back(st);
+		}
+		else {
+			ListITofLI* o = new ListITofLI(li);
+			station_lines->push_back(*o).data.idIT.push_back(st);
+		}
+	}
+	r.close();
+
+	/*
+	r.open("station_lines.csv", ios::in);
+	if (!r.is_open()) throw DSAException(4, "Can't open file track_lines.csv!");
+	L1List<ListITofLI>* track_lines = new L1List<ListITofLI>;
+	int tr = 0;
+	int li = 0;
+	getline(r, bo);
+	while (r.good()) {
+		getline(r, bo, ',');
+		r >> tr;
+		getline(r, bo, ',');
+		r >> li;
+		getline(r, bo);
+		ListITofLI LI(li);
+		int index = 0;
+		L1Item<ListITofLI>* tam = track_lines->find(LI, index);
+		if (tam != NULL) {
+			tam->data.idIT.push_back(st);
+		}
+		else {
+			ListITofLI* o = new ListITofLI(li);
+			track_lines->push_back(*o).data.idIT.push_back(st);
+		}
+	}
+	r.close();
+	*/
 }
 
 bool Point::operator==(Point a){
@@ -67,11 +121,10 @@ int TDataset::CL(){ return this->numLine; }
 int TDataset::CLcity(string city){
     TCity a(city);
     int idx;
-    L1Item<TCity>* p= new L1Item<TCity>();
-    this->city.find(a,idx,p);
+    L1Item<TCity>* p = this->city.find(a,idx);
     int id = p->data.id;
     p=NULL;
-    delete[] p;
+    delete p;
     int num=0;
     L1Item<TLine>* l = this->line.getHead();
     while (l!=NULL){

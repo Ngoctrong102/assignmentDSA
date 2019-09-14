@@ -61,11 +61,11 @@ public:
     T&      at(int i);// give the reference to the element i-th in the list
     T&      operator[](int i);// give the reference to the element i-th in the list
 
-    bool    find(T& a, int& idx, L1Item<T>* p);// find an element similar to a in the list. Set the found index to idx, set idx to -1 if failed. Return true if success.
+	L1Item<T>* find(T& a, int& idx);// find an element similar to a in the list. Set the found index to idx, set idx to -1 if failed. Return true if success.
     int     insert(int i, T& a);// insert an element into the list at location i. Return 0 if success, -1 otherwise
     int     remove(int i);// remove an element at position i in the list. Return 0 if success, -1 otherwise.
 
-    int     push_back(T& a);// insert to the end of the list
+	L1Item<T>& push_back(T& a);// insert to the end of the list
     int     insertHead(T& a);// insert to the beginning of the list
 
     int     removeHead();// remove the beginning element of the list
@@ -133,21 +133,21 @@ T& L1List<T>::operator[](int i){
     return this->at(i);
 }
 template <typename T>
-bool L1List<T>::find(T& a, int& idx, L1Item<T>* p){
+L1Item<T>* L1List<T>::find(T& a, int& idx){
     if (!this->isEmpty()){
-        p=this->_pHead;
+        L1Item<T>* p = this->_pHead;
         idx = 0;
         while (p->data!=a && p->pNext!=NULL) {
             p = p->pNext;
             idx++;
         }
-        if (p->data == a) return true;
+        if (p->data == a) return p;
         else {
             idx = -1;
-            return false;
+            return NULL;
         }
     }
-	return false;
+	return NULL;
 }
 template <typename T>
 void L1List<T>::clean(){
@@ -157,11 +157,12 @@ void L1List<T>::clean(){
 /// Insert item to the end of the list
 /// Return 0 if success, -1 otherwise
 template <class T>
-int L1List<T>::push_back(T &a) {
+L1Item<T>& L1List<T>::push_back(T &a) {
     // TODO: Your code goes here
     this->_size++;
     if (this->isEmpty()) {
         this->_pHead = new L1Item<T>(a);
+		return *this->_pHead;
     }
     else{
         L1Item<T>* p = this->_pHead;
@@ -170,10 +171,8 @@ int L1List<T>::push_back(T &a) {
             p=p->pNext;
         }
         p->pNext= new L1Item<T>(a);
-        p = NULL;
-        delete[] p;
+		return *p->pNext;
     }
-    return 0;
 }
 
 /// Insert item to the front of the list

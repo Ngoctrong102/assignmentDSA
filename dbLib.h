@@ -101,6 +101,19 @@ struct TStation{
     //~TStation();
 };
 
+struct ListITofLI {
+	int idLI;
+	L1List<int> idIT;
+	ListITofLI():idLI(0),idIT(L1List<int>()){}
+	ListITofLI(int a):idLI(a),idIT(L1List<int>()){}
+	bool operator==(ListITofLI a) {
+		return this->idLI == a.idLI;
+	}
+	bool operator!=(ListITofLI a) {
+		return this->idLI != a.idLI;
+	}
+};
+
 class TDataset {
     // This class can be a container that help you manage your tables
     private:
@@ -132,6 +145,7 @@ class TDataset {
         int  RSL(int station_id, int line_id);
 };
 
+//L1List<ListITofLI>* doc_lines(string tenfile,)
 // Please add more or modify as needed
 
 void LoadData(void* &);
