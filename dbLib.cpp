@@ -1,4 +1,4 @@
-/* Created by Nguyen Duc Dung on 2019-09-03.
+﻿/* Created by Nguyen Duc Dung on 2019-09-03.
  * =========================================================================================
  * Name        : dbLib.cpp
  * Author      : Duc Dung Nguyen
@@ -42,26 +42,57 @@ L1List<ListITofLI>* doc_lines(string tenfile) {
 	return t;
 }
 void LoadData(void* &pData){
-    TDataset* p = new TDataset();
-    ifstream r;
-    // doc file city
-    r.open("cities.csv",ios::in);
-    if (!r.is_open()) throw DSAException(2,"Can't open file cities.csv!");
-    string bo;
-    getline(r,bo);
-    while (r.good()){
-        TCity a;
-        r >> a.id;
-        getline(r,bo,',');
-        getline(r,a.name,',');
-        getline(r,bo);
-		p->getCity().push_back(a);
-    }
-    r.close();
-    //cout << p->getCity().getSize();
 	try {
+		// đọc file cities.csv
+		TDataset* p = new TDataset();
+		ifstream r;
+		string bo;
+
+		// doc file city
+		r.open("cities.csv", ios::in);
+		if (!r.is_open()) throw DSAException(2, "Can't open file cities.csv!");
+		getline(r, bo);
+		while (r.good()) {
+			TCity a;
+			r >> a.id;
+			getline(r, bo, ',');
+			getline(r, a.name, ',');
+			getline(r, bo);
+			p->getCity().push_back(a);
+		}
+		r.close();
+		//cout << p->getCity().getSize();
 		L1List<ListITofLI>* station_lines = doc_lines("station_lines.csv");
 		L1List<ListITofLI>* track_lines = doc_lines("track_lines.csv");
+ 		//cout << "y";
+		
+		r.open("lines.csv", ios::in);
+		if (!r.is_open()) throw DSAException(4, "Can't open file lines.csv!");
+		getline(r, bo);
+		while (r.good()) {
+			TLine l;
+			r >> l.id;
+			getline(r, bo, ',');
+			r >> l.city_id;
+			getline(r, bo, ',');
+			getline(r, l.name, ',');
+			getline(r, bo);
+			ListITofLI LI(l.id);
+			int index = 0;
+			L1Item<ListITofLI>* tam = station_lines->find(LI, index);
+			if (tam!=NULL) l.list_stid = tam->data.idIT;
+			tam = track_lines->find(LI, index);
+			if (tam!=NULL) l.list_trid = tam->data.idIT;
+			p->getLine().push_back(l);
+		}
+		cout << "y";
+		r.close();
+
+
+
+
+
+		pData = p;
 	}
 	catch (DSAException e) {
 		throw e;
