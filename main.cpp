@@ -21,6 +21,7 @@ int main() {
     LoadData(pData);
     assert(pData != nullptr);
 	TDataset* p = static_cast<TDataset*>(pData);
+	cout << p->CLcity("Shanghi");
     cout << fixed << setprecision(8);
     string req;
     while (true) {
@@ -40,7 +41,7 @@ int main() {
         pOutput = nullptr;
     }
 
-    //ReleaseData(pData);
+    ReleaseData(pData);
     Finalization();
     return 0;
 }

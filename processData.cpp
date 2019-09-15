@@ -29,5 +29,8 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
     //       pData is a pointer to a data structure that manages the dataset
     //       pOutput is a pointer reference. It is set to nullptr and student must allocate data for it in order to save the required output
     //       N is the size of output, must be a non-negative number
+	
+
+
 }
 

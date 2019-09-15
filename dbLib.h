@@ -90,6 +90,9 @@ struct TStation{
     int city_id;
     string pos;
     TStation():id(0),name(""),city_id(0),pos(""){}
+	TStation(string name):id(0), name(name), city_id(0), pos(""){}
+	bool operator==(TStation a);
+	bool operator!=(TStation a);
     //~TStation();
 };
 

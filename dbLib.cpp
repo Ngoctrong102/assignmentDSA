@@ -139,6 +139,12 @@ bool TCity::operator==(TCity a){
 bool TCity::operator!=(TCity a){
     return this->name != a.name;
 }
+bool TStation::operator==(TStation a) {
+	return this->name == a.name;
+}
+bool TStation::operator!=(TStation a) {
+	return this->name != a.name;
+}
 L1List<TCity>& TDataset::getCity(){
     return this->city;
 }
@@ -152,14 +158,13 @@ L1List<TTrack>& TDataset::getTrack(){
     return this->track;
 }
 
+
+
+// hàm xử lý của TDataset
 int TDataset::CL(){ return this->getLine().getSize(); }
 int TDataset::CLcity(string city){
-    TCity a(city);
-    int idx;
-    L1Item<TCity>* p = this->city.find(a,idx);
-    int id = p->data.id;
-    p=NULL;
-    delete p;
+	int id = this->FC(city);
+	if (id == -1) return id;
     int num=0;
     L1Item<TLine>* l = this->line.getHead();
     while (l!=NULL){
@@ -169,4 +174,22 @@ int TDataset::CLcity(string city){
         l = l->pNext;
     }
 	return num;
+}
+int TDataset::FC(string city) {
+	TCity a(city);
+	int idx;
+	L1Item<TCity>* p = this->city.find(a, idx);
+	if (p == NULL) return -1;
+	return p->data.id;
+}
+int TDataset::FS(string station) {
+	TStation a(station);
+	int idx;
+	L1Item<TStation>* p = this->station.find(a, idx);
+	if (p == NULL) return -1;
+	return p->data.id;
+}
+void ReleaseData(void*& pData) {
+	//TDataset* p = static_cast<TDataset*>(pData);
+	delete[] pData;
 }
