@@ -189,6 +189,19 @@ int TDataset::FS(string station) {
 	if (p == NULL) return -1;
 	return p->data.id;
 }
+int TDataset::SLP(int station_id, int track_id) {
+	L1Item<TStation>* a = this->getStation().getHead();
+	while (a != NULL) {
+		if (a->data.id == station_id) break;
+		else a = a->pNext;
+	}
+	if (a != NULL)string pos_st = a->data.pos;
+	else return -1;
+	L1Item<TTrack>* t = this->getTrack().getHead();
+	while (t != NULL) {
+
+	}
+}
 void ReleaseData(void*& pData) {
 	//TDataset* p = static_cast<TDataset*>(pData);
 	delete[] pData;

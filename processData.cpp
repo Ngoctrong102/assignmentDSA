@@ -31,6 +31,9 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
     //       N is the size of output, must be a non-negative number
 	
 
+	TDataset* p = static_cast<TDataset*>(pData);
+	pOutput = new int(p->FS(pRequest));
+	N = 1;
 
 }
 

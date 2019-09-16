@@ -19,17 +19,16 @@ int main() {
     void*   pOutput = nullptr;
     int     N;
     LoadData(pData);
-    assert(pData != nullptr);
-	TDataset* p = static_cast<TDataset*>(pData);
-	cout << p->CLcity("Shanghi");
+	assert(pData != nullptr);
     cout << fixed << setprecision(8);
     string req;
+	ifstream a("test.txt");
     while (true) {
         req = "";
-        getline(cin, req);
-        if (cin.bad()) {
-            cin.clear();
-            cin.ignore(1024, '\n');
+        getline(a, req);
+        if (a.bad()) {
+            a.clear();
+            a.ignore(1024, '\n');
             continue;
         }
         if (req == "Exit") {
