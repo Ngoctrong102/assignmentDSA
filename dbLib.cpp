@@ -191,16 +191,30 @@ int TDataset::FS(string station) {
 }
 int TDataset::SLP(int station_id, int track_id) {
 	L1Item<TStation>* a = this->getStation().getHead();
+	string linestring;
+	string pos_st;
 	while (a != NULL) {
 		if (a->data.id == station_id) break;
 		else a = a->pNext;
 	}
-	if (a != NULL)string pos_st = a->data.pos;
+	if (a != NULL) pos_st = a->data.pos;
 	else return -1;
 	L1Item<TTrack>* t = this->getTrack().getHead();
 	while (t != NULL) {
-
+		if (t->data.id == track_id) break;
+		else a = a->pNext;
 	}
+	if (t != NULL) linestring = t->data.lis;
+	else return -1;
+	int vt = linestring.find(pos_st);
+	int pos = 0;
+	if (vt == -1) return -1;
+	else {
+		for (int i = 0; i < vt; i++) {
+			if (linestring[i] == ',') pos++;
+		}
+	}
+	return pos;
 }
 void ReleaseData(void*& pData) {
 	//TDataset* p = static_cast<TDataset*>(pData);
