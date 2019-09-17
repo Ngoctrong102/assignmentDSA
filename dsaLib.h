@@ -186,7 +186,7 @@ int L1List<T>::insertHead(T &a) {
 
 template <typename T>
 int L1List<T>::remove(int i){
-    if (i<0||i>this->_size) return -1;
+    if (i<0 || i>this->_size) return -1;
     if (i==0){
         L1Item<T>* p = this->_pHead;
         this->_pHead = p->pNext;

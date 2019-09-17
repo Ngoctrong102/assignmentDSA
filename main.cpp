@@ -21,14 +21,14 @@ int main() {
     LoadData(pData);
 	assert(pData != nullptr);
     cout << fixed << setprecision(8);
+	cout << "chay code moi r ne";
     string req;
-	ifstream a("test.txt");
     while (true) {
         req = "";
-        getline(a, req);
-        if (a.bad()) {
-            a.clear();
-            a.ignore(1024, '\n');
+        getline(cin, req);
+        if (cin.bad()) {
+            cin.clear();
+            cin.ignore(1024, '\n');
             continue;
         }
         if (req == "Exit") {

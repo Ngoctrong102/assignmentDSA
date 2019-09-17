@@ -145,6 +145,12 @@ bool TStation::operator==(TStation a) {
 bool TStation::operator!=(TStation a) {
 	return this->name != a.name;
 }
+bool TLine::operator==(TLine a) {
+	return this->id == a.id;
+}
+bool TLine::operator!=(TLine a) {
+	return this->id != a.id;
+}
 L1List<TCity>& TDataset::getCity(){
     return this->city;
 }
@@ -202,7 +208,7 @@ int TDataset::SLP(int station_id, int track_id) {
 	L1Item<TTrack>* t = this->getTrack().getHead();
 	while (t != NULL) {
 		if (t->data.id == track_id) break;
-		else a = a->pNext;
+		else t = t->pNext;
 	}
 	if (t != NULL) linestring = t->data.lis;
 	else return -1;
@@ -215,6 +221,116 @@ int TDataset::SLP(int station_id, int track_id) {
 		}
 	}
 	return pos;
+}
+int* TDataset::LSC(string city, int &N) {
+	TCity c(city);
+	int id = this->city.find(c, id)->data.id;
+	L1Item<TStation>* s = this->station.getHead();
+	L1List<int> kq;
+	while (s != NULL) {
+		if (s->data.city_id == id) kq.push_back(s->data.id);
+		s = s->pNext;
+	}
+	N = kq.getSize();
+	int* r = new int[N];
+	L1Item<int>* k = kq.getHead();
+	int i = 0;
+	while (k != NULL) {
+		r[i] = k->data;
+		k = k->pNext;
+		i++;
+	}
+	return r;
+}
+int* TDataset::LLC(string city, int& N) {
+	TCity c(city);
+	int id = this->city.find(c, id)->data.id;
+	L1Item<TLine>* s = this->line.getHead();
+	L1List<int> kq;
+	while (s != NULL) {
+		if (s->data.city_id == id) kq.push_back(s->data.id);
+		s = s->pNext;
+	}
+	N = kq.getSize();
+	int* r = new int[N];
+	L1Item<int>* k = kq.getHead();
+	int i = 0;
+	while (k != NULL) {
+		r[i] = k->data;
+		k = k->pNext;
+		i++;
+	}
+	return r;
+}
+int* TDataset::LSL(int line_id, int &N) {
+	TLine a;
+	a.id = line_id;
+	int idx;
+	L1Item<TLine>* p = this->line.find(a, idx);
+	L1Item<int>* temp;
+	if (p != NULL) {
+		temp = p->data.list_stid.getHead();
+		N = p->data.list_stid.getSize();
+	}
+	else return NULL;
+	int* kq = new int[N];
+	int i = 0;
+	while (temp != NULL) {
+		kq[i] = temp->data;
+		temp = temp->pNext;
+		i++;
+	}
+	return kq;
+}
+int TDataset::RSL(int station_id, int line_id) {
+	TLine a;
+	a.id = line_id;
+	int idx;
+	L1Item<TLine>* p = this->line.find(a, idx);
+	if (p != NULL) {
+		int i = 0;
+		if (p->data.list_stid.find(station_id, i)) {
+			p->data.list_stid.remove(i);
+			return 0;
+		}
+		else return -1;
+	}
+	else return -1;
+}
+int TDataset::ISL(int station_id, int line_id, int pos) {
+	TLine a;
+	a.id = line_id;
+	int idx;
+	L1Item<TLine>* p = this->line.find(a, idx);
+	if (p != NULL) {
+		int i = 0;
+		if (p->data.list_stid.find(station_id, i)) return -1;
+		else {
+			p->data.list_stid.insert(pos, station_id);
+			return 0;
+		}
+	}
+	else return -1;
+}
+int TDataset::RS(int station_id) {
+	L1Item<TStation>* p = this->station.getHead();
+	int idx = 0;
+	while (p != NULL) {
+		if (p->data.id == station_id) break;
+		p = p->pNext;
+		idx++;
+	}
+	if (p == NULL) return -1;
+	else {
+		this->station.remove(idx);
+		int index = 0;
+		L1Item<TLine>* l = this->line.getHead();
+		while (l != NULL) {
+			l->data.list_stid.find(station_id, index);
+			l->data.list_stid.remove(index);
+		}
+		return 0;
+	}
 }
 void ReleaseData(void*& pData) {
 	//TDataset* p = static_cast<TDataset*>(pData);

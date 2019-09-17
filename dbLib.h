@@ -60,6 +60,8 @@ struct TLine {
     L1List<int> list_stid;
     L1List<int> list_trid;
     TLine():id(0),name(""),city_id(0),list_stid(L1List<int>()),list_trid(L1List<int>()){}
+	bool operator==(TLine a);
+	bool operator!=(TLine a);
     //~TLine();
 };
 
@@ -127,9 +129,9 @@ class TDataset {
         L1List<TTrack>& getTrack();
         int  CL();
         int  CLcity(string city);
-        int* LSC(string city);
-        int* LLC(string city);
-        int* LSL(int line_id);
+        int* LSC(string city, int &N);
+        int* LLC(string city, int &N);
+        int* LSL(int line_id, int &N);
         int  FC(string city);
         int  FS(string station);
         int  SLP(int station_id, int track_id);

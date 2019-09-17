@@ -30,10 +30,26 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
     //       pOutput is a pointer reference. It is set to nullptr and student must allocate data for it in order to save the required output
     //       N is the size of output, must be a non-negative number
 	
-
-	TDataset* p = static_cast<TDataset*>(pData);
-	pOutput = new int(p->FS(pRequest));
 	N = 1;
-
+	TDataset* p = static_cast<TDataset*>(pData);
+	//pOutput = new int(p->FS(pRequest));
+	cout << "truoc\n";
+	TLine l;
+	l.id = 570;
+	int idx = 0;
+	L1Item<int>* a = p->getLine().find(l, idx)->data.list_stid.getHead();
+	while (a != NULL) {
+		cout << a->data <<" ";
+		a = a->pNext;
+	}
+	cout << "\n";
+	cout << "sau\n";
+	//pOutput = p->LSL(570,N);
+	pOutput = new int(p->ISL(7751,570,3));
+	a = p->getLine().find(l,idx)->data.list_stid.getHead();
+	while (a != NULL) {
+		cout << a->data<<" ";
+		a = a->pNext;
+	}
 }
 
