@@ -72,24 +72,23 @@ void LoadData(void* &pData){
 		if (!r.is_open()) throw DSAException(4, "Can't open file lines.csv!");
 		getline(r, bo);
 		while (r.good()) {
-			TLine l;
-			r >> l.id;
+			TLine* l = new TLine();
+			r >> (*l).id;
 			getline(r, bo, ',');
-			r >> l.city_id;
+			r >> (*l).city_id;
 			getline(r, bo, ',');
-			getline(r, l.name, ',');
+			getline(r, (*l).name, ',');
 			getline(r, bo);
-			if (l.id == 0 && l.city_id == 0 && l.name == "") break;
-			ListITofLI LI(l.id);
+			if ((*l).id == 0 && (*l).city_id == 0 && (*l).name == "") break;
+			ListITofLI LI((*l).id);
 			int index = 0;
 			L1Item<ListITofLI>* tam = station_lines->find(LI, index);
-			if (tam != NULL) l.list_stid = tam->data.idIT;
+			if (tam != NULL) (*l).list_stid = tam->data.idIT;
 			tam = track_lines->find(LI, index);
-			if (tam != NULL) l.list_trid = tam->data.idIT;
-			p->getLine().push_back(l);
+			if (tam != NULL) (*l).list_trid = tam->data.idIT;
+			p->getLine().push_back((*l));
 		}
 		r.close();
-
 		r.open("stations.csv", ios::in);
 		if (!r.is_open()) throw DSAException(4, "Can't open file station.csv!");
 		getline(r, bo);
