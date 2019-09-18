@@ -13,17 +13,21 @@
 using namespace std;
 
 int main() {
+    clock_t start = clock();
     Initialization();
 
     void*   pData = nullptr;
     void*   pOutput = nullptr;
     int     N;
     LoadData(pData);
+    TDataset* p = static_cast<TDataset*>(pData);
+    size_t a = p->getCity().getSize();
 	assert(pData != nullptr);
     cout << fixed << setprecision(8);
-	cout << "chay code moi r ne";
     string req;
+    clock_t nhap = clock();
     while (true) {
+    
         req = "";
         getline(cin, req);
         if (cin.bad()) {
@@ -31,6 +35,7 @@ int main() {
             cin.ignore(1024, '\n');
             continue;
         }
+    
         if (req == "Exit") {
             break;
         }
@@ -39,8 +44,10 @@ int main() {
         delete [] (int*)pOutput;
         pOutput = nullptr;
     }
-
+    clock_t xong = clock();
+    a = p->getCity().getSize();
     ReleaseData(pData);
     Finalization();
+    cout << (double)(clock()-xong+nhap-start)/CLOCKS_PER_SEC;
     return 0;
 }

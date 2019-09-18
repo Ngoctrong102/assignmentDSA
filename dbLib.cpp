@@ -328,11 +328,61 @@ int TDataset::RS(int station_id) {
 		while (l != NULL) {
 			l->data.list_stid.find(station_id, index);
 			l->data.list_stid.remove(index);
+			l = l->pNext;
 		}
+		return 0;
+	}
+}
+int  TDataset::US(int station_id, string name, int city_id, string pos){
+	L1Item<TStation>* p = this->station.getHead();
+	while (p!=NULL){
+		if (p->data.id == station_id) break;
+		p = p->pNext;
+	}
+	if (p==NULL) return -1;
+	else {
+		p->data.name = name;
+		p->data.city_id = city_id;
+		p->data.pos = pos;
+		return 0;
+	}
+}
+int  TDataset::IS( string name, string pos){
+	L1Item<TTrack>* tra = this->track.getHead();
+	while (tra!=NULL){
+		if (tra->data.lis.find(pos)!=-1) break;
+		tra = tra->pNext;
+	}
+	if (tra == NULL) return -1;
+	
+
+	L1Item<TLine>* p = this->line.getHead();
+	L1Item<int>* t = NULL;
+	bool timthay = false;
+	while (p!=NULL){
+		t = p->data.list_trid.getHead();
+		while (t!=NULL){
+			if (t->data == tra->data.id) {
+				timthay = true;
+				break;
+			}
+			t = t->pNext;
+		}
+		if (timthay == true) break;
+		p = p->pNext;
+	}
+	if (!timthay) return -1;
+	else {
+		TStation a;
+		a.name = name;
+		a.id = ++this->maxIdSt;
+		a.pos = pos;
+		a.city_id = p->data.city_id;
+		this->station.push_back(a);
 		return 0;
 	}
 }
 void ReleaseData(void*& pData) {
 	//TDataset* p = static_cast<TDataset*>(pData);
-	delete[] pData;
+	if (pData) delete[] pData;
 }

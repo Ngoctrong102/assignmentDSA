@@ -19,6 +19,7 @@
 #include <cstring>
 #include <sstream>
 #include <math.h>
+#include <time.h>
 
 #include "dsaLib.h"
 
@@ -135,9 +136,9 @@ class TDataset {
         int  FC(string city);
         int  FS(string station);
         int  SLP(int station_id, int track_id);
-        int  IS(string cvs_desc);
+        int  IS( string name, string pos);
         int  RS(int station_id);
-        int  US(int station_id, string cvs_desc);
+        int  US(int station_id, string name, int city_id, string pos);
         int  ISL(int station_id, int line_id, int pos);
         int  RSL(int station_id, int line_id);
 };
