@@ -224,7 +224,10 @@ int TDataset::SLP(int station_id, int track_id) {
 }
 int* TDataset::LSC(string city, int &N) {
 	TCity c(city);
-	int id = this->city.find(c, id)->data.id;
+	int idx = 0;
+	L1Item<TCity>* ci = this->city.find(c, idx);
+	if (ci == nullptr) return new int(-1);
+	int id = ci->data.id;
 	L1Item<TStation>* s = this->station.getHead();
 	L1List<int> kq;
 	while (s != NULL) {
@@ -244,7 +247,10 @@ int* TDataset::LSC(string city, int &N) {
 }
 int* TDataset::LLC(string city, int& N) {
 	TCity c(city);
-	int id = this->city.find(c, id)->data.id;
+	int id = 0;
+	L1Item<TCity>* ci = this->city.find(c, id);
+	if (ci == NULL) return new int(-1); 
+	id = ci->data.id;
 	L1Item<TLine>* s = this->line.getHead();
 	L1List<int> kq;
 	while (s != NULL) {
@@ -306,7 +312,7 @@ int TDataset::ISL(int station_id, int line_id, int pos) {
 		int i = 0;
 		if (p->data.list_stid.find(station_id, i)) return -1;
 		else {
-			p->data.list_stid.insert(pos, station_id);
+			if (p->data.list_stid.insert(pos, station_id) == -1) return -1;
 			return 0;
 		}
 	}
@@ -348,15 +354,15 @@ int  TDataset::US(int station_id, string name, int city_id, string pos){
 	}
 }
 int  TDataset::IS( string name, string pos){
-	L1Item<TTrack>* tra = this->track.getHead();
+	/*L1Item<TTrack>* tra = this->track.getHead();
 	while (tra!=NULL){
 		if (tra->data.lis.find(pos)!=-1) break;
 		tra = tra->pNext;
 	}
-	if (tra == NULL) return -1;
+	if (tra == NULL) return -1;*/
 	
 
-	L1Item<TLine>* p = this->line.getHead();
+	/*L1Item<TLine>* p = this->line.getHead();
 	L1Item<int>* t = NULL;
 	bool timthay = false;
 	while (p!=NULL){
@@ -372,17 +378,17 @@ int  TDataset::IS( string name, string pos){
 		p = p->pNext;
 	}
 	if (!timthay) return -1;
-	else {
+	else {*/
 		TStation a;
 		a.name = name;
 		a.id = ++this->maxIdSt;
 		a.pos = pos;
-		a.city_id = p->data.city_id;
+		a.city_id = 0;             //p->data.city_id;
 		this->station.push_back(a);
-		return 0;
-	}
+		return this->maxIdSt;
+	//}
 }
 void ReleaseData(void*& pData) {
 	//TDataset* p = static_cast<TDataset*>(pData);
-	if (pData) delete[] pData;
+	delete pData;
 }

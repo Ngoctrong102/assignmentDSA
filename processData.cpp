@@ -59,12 +59,13 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
 	// 	s >> id;
 	// 	cout << id;
 	// }
+	clock_t start = clock();
 	TDataset* p = static_cast<TDataset*>(pData);
 	N = 1;
 	stringstream s;
 	s << pRequest;
 	string req = "";
-	s >> req;
+	getline(s, req, ' ');
 	if (req == "CL"){
 		if (!s.good()) pOutput = new int(p->CL());
 		else {
@@ -145,5 +146,6 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
 		s >> line_id;
 		pOutput = new int(p->RSL(station_id,line_id));
 	}
+	cout << (double)(clock() - start) / CLOCKS_PER_SEC;
 }
 

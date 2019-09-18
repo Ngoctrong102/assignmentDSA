@@ -13,7 +13,6 @@
 using namespace std;
 
 int main() {
-    clock_t start = clock();
     Initialization();
 
     void*   pData = nullptr;
@@ -24,8 +23,9 @@ int main() {
     size_t a = p->getCity().getSize();
 	assert(pData != nullptr);
     cout << fixed << setprecision(8);
+	//ifstream in("requests.txt");
     string req;
-    clock_t nhap = clock();
+    //clock_t nhap = clock();
     while (true) {
     
         req = "";
@@ -44,10 +44,9 @@ int main() {
         delete [] (int*)pOutput;
         pOutput = nullptr;
     }
-    clock_t xong = clock();
+    //clock_t xong = clock();
     a = p->getCity().getSize();
     ReleaseData(pData);
     Finalization();
-    cout << (double)(clock()-xong+nhap-start)/CLOCKS_PER_SEC;
     return 0;
 }

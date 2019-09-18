@@ -137,16 +137,13 @@ L1Item<T>* L1List<T>::find(T& a, int& idx){
     if (!this->isEmpty()){
         L1Item<T>* p = this->_pHead;
         idx = 0;
-        while (p->data!=a && p->pNext!=NULL) {
-            p = p->pNext;
+        while (p!=NULL) {
+			if (p->data == a) return p;
+			p = p->pNext;
             idx++;
         }
-        if (p->data == a) return p;
-        else {
-            idx = -1;
-            return NULL;
-        }
     }
+	idx = -1;
 	return NULL;
 }
 template <typename T>
@@ -190,7 +187,8 @@ int L1List<T>::remove(int i){
     if (i==0){
         L1Item<T>* p = this->_pHead;
         this->_pHead = p->pNext;
-        delete[] p;
+        delete p;
+		p = NULL;
     }
     else {
         L1Item<T>* p = this->_pHead;
@@ -199,7 +197,8 @@ int L1List<T>::remove(int i){
         }
         L1Item<T>* temp = p->pNext;
         p->pNext = p->pNext->pNext;
-        delete[] temp;
+		delete temp;
+		temp = NULL;
     }
     this->_size--;
     return 0;
@@ -256,7 +255,7 @@ void L1List<T>::reverse(){
         t=NULL;
         p=NULL;
         s=NULL;
-        delete[] t,p,s;
+        delete t,p,s;
     }
 }
 
