@@ -42,12 +42,14 @@ struct L1Item {
 template <class T>
 class L1List {
     L1Item<T>   *_pHead;// The head pointer of linked list
+	L1Item<T>*   _pTail;
     size_t       _size;// number of elements in this list
 public:
-    L1List() : _pHead(NULL), _size(0) {}
+    L1List() : _pHead(NULL), _size(0),_pTail(NULL) {}
 	~L1List() {
 		this->clean();
-		delete[] _pHead;
+		delete _pHead;
+		delete _pTail;
 	}
     L1Item<T>* getHead(){ return this->_pHead; }
     void    clean();
@@ -134,7 +136,7 @@ T& L1List<T>::operator[](int i){
 }
 template <typename T>
 L1Item<T>* L1List<T>::find(T& a, int& idx){
-    if (!this->isEmpty()){
+    if (this->_pHead!=NULL){
         L1Item<T>* p = this->_pHead;
         idx = 0;
         while (p!=NULL) {
@@ -148,15 +150,36 @@ L1Item<T>* L1List<T>::find(T& a, int& idx){
 }
 template <typename T>
 void L1List<T>::clean(){
-	this->_pHead = NULL;
-    this->_size = 0;
+	//this->_pHead = NULL;
+    //this->_size = 0;
+	if (this->_pHead != NULL) {
+		if (this->_pHead == this->_pTail) {
+			this->_pHead = NULL;
+			delete this->_pTail;
+			this->_pTail = NULL;
+		}
+		else {
+			L1Item<T>* p = this->_pHead;
+			while (this->_pHead != this->_pTail) {
+				this->_pHead = this->_pHead->pNext;
+				delete p;
+				p = this->_pHead;
+			}
+			this->_pHead = NULL;
+			p = NULL;
+			delete this->_pTail;
+			this->_pTail = NULL;
+		}
+		this->_size = 0;
+	}
+	
 }
 /// Insert item to the end of the list
 /// Return 0 if success, -1 otherwise
 template <class T>
 L1Item<T>& L1List<T>::push_back(T &a) {
     // TODO: Your code goes here
-    this->_size++;
+    /*this->_size++;
     if (this->isEmpty()) {
         this->_pHead = new L1Item<T>(a);
 		return *this->_pHead;
@@ -169,7 +192,19 @@ L1Item<T>& L1List<T>::push_back(T &a) {
         }
         p->pNext= new L1Item<T>(a);
 		return *p->pNext;
-    }
+    }*/
+	this->_size++;
+	if (this->_pHead == NULL) {
+		this->_pHead = new L1Item<T>(a);
+		this->_pTail = this->_pHead;
+		return *this->_pHead;
+	}
+	else {
+		this->_pTail->pNext = new L1Item<T>(a);
+		this->_pTail = this->_pTail->pNext;
+		return *this->_pTail;
+	}
+	
 }
 
 /// Insert item to the front of the list
@@ -227,6 +262,10 @@ int L1List<T>::insert(int i, T& a){
         p->pNext = this->_pHead;
         this->_pHead= p;
     }
+	else if (i == this->_size - 1) {
+		this->_pTail->pNext = new L1Item<T>(a);
+		this->_pTail = this->_pTail->pNext;
+	}
     else{
     L1Item<T>* p=this->_pHead;
     for (int k=0;k<i-1;k++){
