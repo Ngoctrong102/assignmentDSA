@@ -28,6 +28,7 @@ L1List<ListITofLI>* doc_lines(string tenfile) {
 		r >> li;
 		getline(r, bo);
 		ListITofLI LI(li);
+		if (tr == 0 && li == 0) break;
 		int index = 0;
 		L1Item<ListITofLI>* tam = t->find(LI, index);
 		if (tam != NULL) {
@@ -58,6 +59,7 @@ void LoadData(void* &pData){
 			getline(r, bo, ',');
 			getline(r, a.name, ',');
 			getline(r, bo);
+			if (a.id == 0 && a.name == "") break;
 			p->getCity().push_back(a);
 		}
 		r.close();
@@ -77,6 +79,7 @@ void LoadData(void* &pData){
 			getline(r, bo, ',');
 			getline(r, l.name, ',');
 			getline(r, bo);
+			if (l.id == 0 && l.city_id == 0 && l.name == "") break;
 			ListITofLI LI(l.id);
 			int index = 0;
 			L1Item<ListITofLI>* tam = station_lines->find(LI, index);
@@ -101,6 +104,7 @@ void LoadData(void* &pData){
 			for (int k = 0; k < 4; k++) getline(r, bo, ',');
 			r >> s.city_id;
 			getline(r, bo);
+			if (s.id == 0 && s.name == "" && s.pos == "" && s.city_id == 0) break;
 			p->getStation().push_back(s);
 		}
 		r.close();
@@ -110,10 +114,17 @@ void LoadData(void* &pData){
 		getline(r, bo);
 		while (r.good()) {
 			TTrack tra;
+			char a;
 			r >> tra.id;
-			getline(r, bo, '(');
-			getline(r, tra.lis, ')');
+			r >> a;
+			r >> a;
+			if (a == '"') {
+				getline(r, bo, '(');
+				getline(r, tra.lis, ')');
+			}
+			else tra.lis = "";
 			getline(r, bo);
+			if (tra.id == 0 && tra.lis == "") break;
 			p->getTrack().push_back(tra);
 		}
 		r.close();

@@ -146,6 +146,6 @@ void ProcessRequest(const char* pRequest, void* pData, void* &pOutput, int &N) {
 		s >> line_id;
 		pOutput = new int(p->RSL(station_id,line_id));
 	}
-	cout << (double)(clock() - start) / CLOCKS_PER_SEC;
+	//cout << (double)(clock() - start) / CLOCKS_PER_SEC;
 }
 
